@@ -1,0 +1,6 @@
+# GitHub Pages configuration
+publish_dir: dashboard
+github_pages:
+  enabled: true
+  branch: main
+  folder: dashboard

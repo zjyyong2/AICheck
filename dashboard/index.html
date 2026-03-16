@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Token Speed & Quality Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f9fafb;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            min-height: 100vh;
+        }
+        .navbar {
+            background: linear-gradient(90deg, var(--primary) 0%, #7c3aed 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        .card-header {
+            background: transparent;
+            border-bottom: 2px solid #e5e7eb;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-healthy { background: #d1fae5; color: #065f46; }
+        .status-warning { background: #fef3c7; color: #92400e; }
+        .status-critical { background: #fee2e2; color: #991b1b; }
+        .model-card {
+            border-left: 4px solid var(--primary);
+        }
+        .speed-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .ttft-value {
+            font-size: 1.25rem;
+            color: #6b7280;
+        }
+        .chart-container {
+            position: relative;
+            height: 250px;
+        }
+        .alert-item {
+            border-left: 4px solid;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            background: white;
+        }
+        .alert-item.warning { border-color: var(--warning); }
+        .alert-item.critical { border-color: var(--danger); }
+        .provider-badge {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .provider-bailian { background: #dbeafe; color: #1e40af; }
+        .provider-volcengine { background: #fce7f3; color: #9d174d; }
+        .provider-zhipu { background: #d1fae5; color: #065f46; }
+        .last-update {
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+        .metric-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: #e5e7eb;
+            overflow: hidden;
+        }
+        .metric-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .score-excellent { background: var(--success); }
+        .score-good { background: #3b82f6; }
+        .score-fair { background: var(--warning); }
+        .score-poor { background: var(--danger); }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-speedometer2 me-2"></i>AI Token Dashboard
+            </a>
+            <span class="navbar-text text-white-50">
+                <i class="bi bi-clock me-1"></i>
+                最后更新: <span id="lastUpdate">加载中...</span>
+            </span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- 统计概览 -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <div class="text-muted small">总模型数</div>
+                        <div class="speed-value" id="totalModels">-</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <div class="text-muted small">最快模型</div>
+                        <div class="speed-value text-success" id="fastestModel">-</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <div class="text-muted small">平均吞吐量</div>
+                        <div class="speed-value" id="avgSpeed">-</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <div class="text-muted small">活跃告警</div>
+                        <div class="speed-value" id="activeAlerts">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- 速度测试结果 -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-lightning-charge me-2"></i>速度测试结果</span>
+                        <span class="last-update">每小时更新</span>
+                    </div>
+                    <div class="card-body">
+                        <div id="speedList">
+                            <div class="text-center text-muted py-4">
+                                <div class="spinner-border spinner-border-sm me-2"></div>
+                                加载中...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 质量趋势图表 -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-graph-up me-2"></i>质量趋势</span>
+                        <select id="qualityModelSelect" class="form-select form-select-sm" style="width: auto;">
+                        </select>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="qualityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- 吞吐量趋势 -->
+            <div class="col-lg-8 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-bar-chart me-2"></i>各模型吞吐量对比
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="speedChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 告警列表 -->
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-exclamation-triangle me-2"></i>降智告警</span>
+                        <span class="status-badge status-healthy" id="alertBadge">正常</span>
+                    </div>
+                    <div class="card-body" style="max-height: 350px; overflow-y: auto;">
+                        <div id="alertList">
+                            <div class="text-center text-muted py-4">
+                                <i class="bi bi-check-circle fs-1"></i>
+                                <p class="mt-2">暂无告警</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 质量评分详情 -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-star me-2"></i>质量评分详情
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>模型</th>
+                                        <th>提供商</th>
+                                        <th>当前分数</th>
+                                        <th>基准分数</th>
+                                        <th>变化</th>
+                                        <th>趋势</th>
+                                        <th>状态</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="qualityTable">
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted">加载中...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center text-muted py-4">
+            <p class="mb-1">AI Token Speed & Quality Dashboard</p>
+            <p class="small">每小时降智检测 | 每天速度测试 | 自动更新</p>
+        </footer>
+    </div>
+
+    <script>
+        // 全局变量
+        let speedData = [];
+        let qualityData = [];
+        let alertsData = [];
+        let speedChart = null;
+        let qualityChart = null;
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadData();
+            renderSpeedList();
+            renderSpeedChart();
+            renderQualityTable();
+            initQualityChart();
+            renderAlerts();
+            updateStats();
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleString('zh-CN');
+        });
+
+        // 加载数据
+        async function loadData() {
+            try {
+                const [speedRes, qualityRes, alertsRes] = await Promise.all([
+                    fetch('data/speed_data.json'),
+                    fetch('data/quality_data.json'),
+                    fetch('data/alerts_data.json')
+                ]);
+                speedData = await speedRes.json();
+                qualityData = await qualityRes.json();
+                alertsData = await alertsRes.json();
+            } catch (e) {
+                console.error('加载数据失败:', e);
+                // 使用默认数据
+                speedData = [];
+                qualityData = [];
+                alertsData = [];
+            }
+        }
+
+        // 渲染速度列表
+        function renderSpeedList() {
+            const container = document.getElementById('speedList');
+            if (!speedData.length) {
+                container.innerHTML = '<div class="text-center text-muted py-4">暂无数据</div>';
+                return;
+            }
+
+            const sorted = [...speedData].sort((a, b) => b.tokens_per_sec - a.tokens_per_sec);
+            let html = '';
+            sorted.forEach((item, index) => {
+                const rank = ['🥇', '🥈', '🥉'][index] || (index + 1);
+                const providerClass = getProviderClass(item.provider);
+                html += `
+                    <div class="card model-card mb-3">
+                        <div class="card-body py-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="me-2">${rank}</span>
+                                    <strong>${item.model}</strong>
+                                    <span class="provider-badge ${providerClass} ms-2">${item.provider}</span>
+                                </div>
+                                <div class="text-end">
+                                    <div class="speed-value">${item.tokens_per_sec.toFixed(1)}</div>
+                                    <div class="ttft-value">TTFT: ${(item.ttft / 1000).toFixed(1)}s</div>
+                                </div>
+                            </div>
+                            <div class="metric-bar mt-2">
+                                <div class="metric-bar-fill ${getSpeedClass(item.tokens_per_sec)}" style="width: ${Math.min(100, item.tokens_per_sec / 60 * 100)}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // 渲染速度图表
+        function renderSpeedChart() {
+            const ctx = document.getElementById('speedChart').getContext('2d');
+            const sorted = [...speedData].sort((a, b) => b.tokens_per_sec - a.tokens_per_sec);
+
+            const colors = [
+                '#4f46e5', '#10b981', '#f59e0b', '#ef4444',
+                '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'
+            ];
+
+            speedChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: sorted.map(d => d.model),
+                    datasets: [{
+                        label: '吞吐量 (tokens/s)',
+                        data: sorted.map(d => d.tokens_per_sec),
+                        backgroundColor: colors.slice(0, sorted.length),
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Tokens/s' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 渲染质量表格
+        function renderQualityTable() {
+            const tbody = document.getElementById('qualityTable');
+            const select = document.getElementById('qualityModelSelect');
+
+            if (!qualityData.length) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">暂无数据</td></tr>';
+                return;
+            }
+
+            let tableHtml = '';
+            let selectHtml = '<option value="">选择模型</option>';
+
+            qualityData.forEach(item => {
+                const status = getStatus(item.drop_percentage);
+                const changeClass = item.drop_percentage > 10 ? 'text-danger' : 'text-success';
+                const changeIcon = item.drop_percentage > 10 ? '↓' : '↑';
+
+                selectHtml += `<option value="${item.model}">${item.model}</option>`;
+
+                tableHtml += `
+                    <tr>
+                        <td><strong>${item.model}</strong></td>
+                        <td><span class="provider-badge ${getProviderClass(item.provider)}">${item.provider}</span></td>
+                        <td>${(item.current_score * 100).toFixed(0)}%</td>
+                        <td>${(item.baseline_score * 100).toFixed(0)}%</td>
+                        <td class="${changeClass}">${changeIcon} ${item.drop_percentage.toFixed(1)}%</td>
+                        <td>
+                            ${item.trend && item.trend.length > 0 ?
+                                `<i class="bi bi-graph-down text-success"></i> 稳定` :
+                                '<span class="text-muted">数据不足</span>'}
+                        </td>
+                        <td><span class="status-badge ${status.class}">${status.text}</span></td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = tableHtml;
+            select.innerHTML = selectHtml;
+
+            // 绑定选择事件
+            select.addEventListener('change', (e) => {
+                if (e.target.value) {
+                    updateQualityChart(e.target.value);
+                }
+            });
+
+            // 默认选择第一个
+            if (qualityData.length > 0) {
+                select.value = qualityData[0].model;
+            }
+        }
+
+        // 初始化质量图表
+        function initQualityChart() {
+            const ctx = document.getElementById('qualityChart').getContext('2d');
+
+            qualityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: '综合得分',
+                            data: [],
+                            borderColor: '#4f46e5',
+                            backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: '正确性',
+                            data: [],
+                            borderColor: '#10b981',
+                            backgroundColor: 'transparent',
+                            tension: 0.4
+                        },
+                        {
+                            label: '完整性',
+                            data: [],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'transparent',
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 1,
+                            title: { display: true, text: '分数' }
+                        }
+                    }
+                }
+            });
+
+            // 加载第一个模型的数据
+            if (qualityData.length > 0) {
+                updateQualityChart(qualityData[0].model);
+            }
+        }
+
+        // 更新质量图表
+        function updateQualityChart(modelName) {
+            const model = qualityData.find(d => d.model === modelName);
+            if (!model || !model.trend || !model.trend.length) return;
+
+            qualityChart.data.labels = model.trend.map(t => t.date.slice(5));
+            qualityChart.data.datasets[0].data = model.trend.map(t => t.overall);
+            qualityChart.data.datasets[1].data = model.trend.map(t => t.correctness || t.overall);
+            qualityChart.data.datasets[2].data = model.trend.map(t => t.completeness || t.overall);
+            qualityChart.update();
+        }
+
+        // 渲染告警列表
+        function renderAlerts() {
+            const container = document.getElementById('alertList');
+            const badge = document.getElementById('alertBadge');
+
+            if (!alertsData.length) {
+                container.innerHTML = `
+                    <div class="text-center text-muted py-4">
+                        <i class="bi bi-check-circle fs-1 text-success"></i>
+                        <p class="mt-2">暂无告警</p>
+                    </div>
+                `;
+                badge.className = 'status-badge status-healthy';
+                badge.textContent = '正常';
+                return;
+            }
+
+            let html = '';
+            alertsData.forEach(alert => {
+                const severityClass = alert.severity === 'critical' ? 'critical' : 'warning';
+                const icon = alert.severity === 'critical' ?
+                    '<i class="bi bi-exclamation-circle text-danger me-2"></i>' :
+                    '<i class="bi bi-exclamation-triangle text-warning me-2"></i>';
+                html += `
+                    <div class="alert-item ${severityClass}">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <strong>${alert.model}</strong>
+                                <span class="text-muted ms-2">${alert.metric}</span>
+                            </div>
+                            <span class="status-badge ${severityClass === 'critical' ? 'status-critical' : 'status-warning'}">
+                                ${alert.severity === 'critical' ? '严重' : '警告'}
+                            </span>
+                        </div>
+                        <div class="mt-1 small text-muted">
+                            下降 ${alert.drop_percentage.toFixed(1)}% | 当前: ${alert.current_score.toFixed(2)} → 基准: ${alert.baseline_score.toFixed(2)}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            badge.className = 'status-badge status-warning';
+            badge.textContent = `${alertsData.length} 个告警`;
+        }
+
+        // 更新统计
+        function updateStats() {
+            document.getElementById('totalModels').textContent = speedData.length;
+
+            if (speedData.length) {
+                const fastest = [...speedData].sort((a, b) => b.tokens_per_sec - a.tokens_per_sec)[0];
+                document.getElementById('fastestModel').textContent = fastest.tokens_per_sec.toFixed(0);
+
+                const avgSpeed = speedData.reduce((sum, d) => sum + d.tokens_per_sec, 0) / speedData.length;
+                document.getElementById('avgSpeed').textContent = avgSpeed.toFixed(1);
+            }
+
+            document.getElementById('activeAlerts').textContent = alertsData.length;
+        }
+
+        // 辅助函数
+        function getProviderClass(provider) {
+            const map = {
+                '百炼': 'provider-bailian',
+                '火山引擎': 'provider-volcengine',
+                '智普': 'provider-zhipu'
+            };
+            return map[provider] || 'provider-bailian';
+        }
+
+        function getSpeedClass(speed) {
+            if (speed >= 50) return 'score-excellent';
+            if (speed >= 30) return 'score-good';
+            if (speed >= 15) return 'score-fair';
+            return 'score-poor';
+        }
+
+        function getStatus(drop) {
+            if (drop >= 20) return { class: 'status-critical', text: '严重' };
+            if (drop >= 15) return { class: 'status-warning', text: '警告' };
+            return { class: 'status-healthy', text: '正常' };
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+[
+  {
+    "model": "qwen3.5-plus",
+    "provider": "百炼",
+    "ttft": 15228,
+    "tokens_per_sec": 59.8,
+    "last_test": "2026-03-16T10:00:00Z"
+  },
+  {
+    "model": "MiniMax-M2.5",
+    "provider": "百炼",
+    "ttft": 29000,
+    "tokens_per_sec": 45.9,
+    "last_test": "2026-03-16T10:00:00Z"
+  },
+  {
+    "model": "glm-4.7",
+    "provider": "百炼",
+    "ttft": 35000,
+    "tokens_per_sec": 20.5,
+    "last_test": "2026-03-16T10:00:00Z"
+  },
+  {
+    "model": "glm-5",
+    "provider": "百炼",
+    "ttft": 50000,
+    "tokens_per_sec": 16.0,
+    "last_test": "2026-03-16T10:00:00Z"
+  },
+  {
+    "model": "Kimi-K2.5",
+    "provider": "火山引擎",
+    "ttft": 92000,
+    "tokens_per_sec": 13.0,
+    "last_test": "2026-03-16T10:00:00Z"
+  },
+  {
+    "model": "Doubao-Seed-2.0-pro",
+    "provider": "火山引擎",
+    "ttft": 25058,
+    "tokens_per_sec": 27.9,
+    "last_test": "2026-03-16T10:00:00Z"
+  },
+  {
+    "model": "GLM-4.7",
+    "provider": "火山引擎",
+    "ttft": 98000,
+    "tokens_per_sec": 10.1,
+    "last_test": "2026-03-16T10:00:00Z"
+  }
+]

@@ -1,0 +1,66 @@
+name: Daily Speed Test
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Every day at 2:00 AM
+  workflow_dispatch:  # Manual trigger
+  push:
+    paths:
+      - 'ai_token_tester/**'
+      - 'config.yaml'
+
+jobs:
+  speed-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run quick speed test
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+          VOLCENGINE_API_KEY: ${{ secrets.VOLCENGINE_API_KEY }}
+          VOLCENGINE_BASE_URL: ${{ secrets.VOLCENGINE_BASE_URL }}
+          DASHSCOPE_API_KEY: ${{ secrets.DASHSCOPE_API_KEY }}
+          ZHIPUAI_API_KEY: ${{ secrets.ZHIPUAI_API_KEY }}
+        run: |
+          python -m ai_token_tester --quick --iterations 3
+
+      - name: Generate benchmark report
+        run: |
+          python -c "
+import json
+from datetime import datetime
+from pathlib import Path
+
+# Read latest results if available
+results_file = Path('~/.ai_token_tester/latest_results.json').expanduser()
+if results_file.exists():
+    results = json.loads(results_file.read_text())
+    print('Latest test results:')
+    for r in results:
+        print(f\"  {r.get('model', 'unknown')}: {r.get('tokens_per_sec', 0):.1f} tokens/s\")
+"
+
+      - name: Commit test results
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add benchmark_report.md benchmark_report.html 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "Update benchmark report - $(date '+%Y-%m-%d %H:%M')" || true
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true

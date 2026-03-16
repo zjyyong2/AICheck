@@ -13,6 +13,7 @@ from .prompts.eval_prompts import get_all_eval_keys
 from .utils.formatter import ResultFormatter
 from .monitors.detector import run_detection
 from .storage.history import HistoryStorage
+from .storage.exporter import export_all_data
 
 
 def create_parser() -> argparse.ArgumentParser:
@@ -143,6 +144,13 @@ def create_parser() -> argparse.ArgumentParser:
         type=str,
         choices=get_all_eval_keys(),
         help="指定质量评估的prompt"
+    )
+
+    parser.add_argument(
+        "--export-dashboard",
+        type=str,
+        default="dashboard/data",
+        help="导出数据到JSON供仪表盘使用 (默认: dashboard/data)"
     )
 
     return parser
@@ -278,6 +286,24 @@ def show_quality_history(args: argparse.Namespace):
                 print(f"  - {m}")
         else:
             formatter.print_warning("没有历史数据")
+
+
+def export_dashboard_data(args: argparse.Namespace):
+    """导出仪表盘数据"""
+    formatter = ResultFormatter()
+    formatter.print_header("导出仪表盘数据")
+    formatter.print_info(f"输出目录: {args.export_dashboard}\n")
+
+    try:
+        files = export_all_data(args.export_dashboard)
+        formatter.print_success("导出完成:")
+        for name, path in files:
+            formatter.print_info(f"  {name}: {path}")
+    except Exception as e:
+        formatter.print_error(f"导出失败: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
 
 
 async def run_async(args: argparse.Namespace, config: Config):
@@ -429,6 +455,10 @@ def main():
 
     if args.quality_history:
         show_quality_history(args)
+        return
+
+    if args.export_dashboard:
+        export_dashboard_data(args)
         return
 
     # 检查API密钥
