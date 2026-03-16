@@ -5,7 +5,7 @@ import os
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from .storage.history import HistoryStorage
+from .history import HistoryStorage
 
 
 def export_speed_data(output_dir: str = "dashboard/data") -> str:
