@@ -42,3 +42,7 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# Local scripts (do not commit)
+run_auto_test.bat
+run_auto_test.ps1
