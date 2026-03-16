@@ -1,6 +1,8 @@
 """基准测试编排器"""
 
 import asyncio
+import json
+from pathlib import Path
 from typing import Dict, List, Optional
 
 from ..config import Config
@@ -200,7 +202,39 @@ class BenchmarkRunner:
         if len(all_results) > 1:
             self.formatter.print_comparison(all_results)
 
+        # 保存测试结果到文件
+        self._save_results(all_results)
+
         return all_results
+
+    def _save_results(self, all_results: Dict[str, List[TestResult]]):
+        """保存测试结果到文件"""
+        try:
+            # 创建输出目录
+            output_dir = Path.home() / ".ai_token_tester"
+            output_dir.mkdir(parents=True, exist_ok=True)
+
+            # 转换结果为可序列化的格式
+            output = []
+            for key, results in all_results.items():
+                for r in results:
+                    output.append({
+                        "provider": r.provider,
+                        "model": r.model,
+                        "prompt": r.prompt_name,
+                        "ttft_ms": r.ttft_ms,
+                        "total_tokens": r.total_tokens,
+                        "tokens_per_second": r.tokens_per_second,
+                    })
+
+            # 保存到文件
+            output_file = output_dir / "latest_results.json"
+            with open(output_file, "w", encoding="utf-8") as f:
+                json.dump(output, f, indent=2, ensure_ascii=False)
+
+        except Exception as e:
+            # 保存失败不影响主流程
+            pass
 
     def print_summary(self, all_results: Dict[str, List[TestResult]]):
         """打印测试摘要"""
