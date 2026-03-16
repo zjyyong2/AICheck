@@ -1,9 +1,16 @@
 [
   {
-    "model": "qwen3.5-plus",
+    "model": "qwen3.5-plus (Lite)",
     "provider": "百炼",
-    "ttft": 15228,
-    "tokens_per_sec": 59.8,
+    "ttft": 15405,
+    "tokens_per_sec": 49.8,
+    "last_test": "2026-03-16T10:00:00Z"
+  },
+  {
+    "model": "qwen3.5-plus (Pro)",
+    "provider": "百炼",
+    "ttft": 16352,
+    "tokens_per_sec": 46.6,
     "last_test": "2026-03-16T10:00:00Z"
   },
   {
@@ -21,10 +28,10 @@
     "last_test": "2026-03-16T10:00:00Z"
   },
   {
-    "model": "Kimi-K2.5",
-    "provider": "火山引擎",
-    "ttft": 92000,
-    "tokens_per_sec": 13.0,
+    "model": "glm-5 (Lite)",
+    "provider": "百炼",
+    "ttft": 48641,
+    "tokens_per_sec": 12.9,
     "last_test": "2026-03-16T10:00:00Z"
   },
   {
@@ -32,6 +39,13 @@
     "provider": "火山引擎",
     "ttft": 25058,
     "tokens_per_sec": 27.9,
+    "last_test": "2026-03-16T10:00:00Z"
+  },
+  {
+    "model": "Kimi-K2.5",
+    "provider": "火山引擎",
+    "ttft": 92000,
+    "tokens_per_sec": 13.0,
     "last_test": "2026-03-16T10:00:00Z"
   }
 ]

@@ -1,1 +1,24 @@
-[]
+[
+  {
+    "id": 1,
+    "model": "glm-5 (Lite)",
+    "metric": "overall",
+    "current_score": 0.70,
+    "baseline_score": 0.73,
+    "drop_percentage": 4.1,
+    "severity": "warning",
+    "message": "[glm-5 (Lite)] overall 指标下降 4.1%，当前: 0.70, 基准: 0.73",
+    "timestamp": "2026-03-16T08:00:00Z"
+  },
+  {
+    "id": 2,
+    "model": "Kimi-K2.5",
+    "metric": "completeness",
+    "current_score": 0.68,
+    "baseline_score": 0.72,
+    "drop_percentage": 5.6,
+    "severity": "warning",
+    "message": "[Kimi-K2.5] completeness 指标下降 5.6%，当前: 0.68, 基准: 0.72",
+    "timestamp": "2026-03-16T07:00:00Z"
+  }
+]
