@@ -2,10 +2,80 @@
   {
     "model": "Doubao-Seed-2.0-Code",
     "provider": "Bailian",
-    "current_score": 0.9002619047619047,
-    "baseline_score": 0.9211111111111111,
-    "drop_percentage": 2.263484404618306,
+    "current_score": 0.8410952380952379,
+    "baseline_score": 0.8867380952380951,
+    "drop_percentage": 5.147275998174162,
     "trend": [
+      {
+        "date": "2026-03-17",
+        "overall": 0.8579999999999999,
+        "correctness": 0.8,
+        "completeness": 0.8599999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.645,
+        "correctness": 0.5,
+        "completeness": 0.6499999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.7633333333333332,
+        "correctness": 0.6666666666666666,
+        "completeness": 0.7666666666666666,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.7633333333333332,
+        "correctness": 0.6666666666666666,
+        "completeness": 0.7666666666666666,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.8579999999999999,
+        "correctness": 0.8,
+        "completeness": 0.8599999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.7633333333333332,
+        "correctness": 0.6666666666666666,
+        "completeness": 0.7666666666666666,
+        "coherence": 1.0
+      },
       {
         "date": "2026-03-16",
         "overall": 0.8579999999999999,
@@ -81,10 +151,73 @@
   {
     "model": "Doubao-Seed-2.0-pro",
     "provider": "Bailian",
-    "current_score": 0.8503119047619048,
-    "baseline_score": 0.8226214285714286,
+    "current_score": 0.8156023809523809,
+    "baseline_score": 0.7860738095238096,
     "drop_percentage": 0,
     "trend": [
+      {
+        "date": "2026-03-17",
+        "overall": 0.645,
+        "correctness": 0.5,
+        "completeness": 0.6499999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.7633333333333332,
+        "correctness": 0.6666666666666666,
+        "completeness": 0.7666666666666666,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.7268833333333333,
+        "correctness": 0.6666666666666666,
+        "completeness": 0.6451666666666667,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.8579999999999999,
+        "correctness": 0.8,
+        "completeness": 0.8599999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.645,
+        "correctness": 0.5,
+        "completeness": 0.6499999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.7633333333333332,
+        "correctness": 0.6666666666666666,
+        "completeness": 0.7666666666666666,
+        "coherence": 1.0
+      },
       {
         "date": "2026-03-16",
         "overall": 0.716,
@@ -237,10 +370,80 @@
   {
     "model": "MiniMax-M2.5",
     "provider": "Bailian",
-    "current_score": 0.8742547619047618,
-    "baseline_score": 1.0,
-    "drop_percentage": 12.574523809523818,
+    "current_score": 0.8742023809523809,
+    "baseline_score": 0.8981404761904761,
+    "drop_percentage": 2.6652952263804277,
     "trend": [
+      {
+        "date": "2026-03-17",
+        "overall": 0.8579999999999999,
+        "correctness": 0.8,
+        "completeness": 0.8599999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.8225,
+        "correctness": 0.75,
+        "completeness": 0.825,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.5266666666666666,
+        "correctness": 0.3333333333333333,
+        "completeness": 0.5333333333333333,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.9504999999999999,
+        "correctness": 1.0,
+        "completeness": 0.835,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.9617499999999999,
+        "correctness": 1.0,
+        "completeness": 0.8724999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
       {
         "date": "2026-03-16",
         "overall": 0.716,
@@ -316,10 +519,80 @@
   {
     "model": "glm-4.7",
     "provider": "Bailian",
-    "current_score": 0.9576404761904761,
-    "baseline_score": 0.9211111111111111,
+    "current_score": 0.8935119047619047,
+    "baseline_score": 0.8763309523809524,
     "drop_percentage": 0,
     "trend": [
+      {
+        "date": "2026-03-17",
+        "overall": 0.8579999999999999,
+        "correctness": 0.8,
+        "completeness": 0.8599999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.8225,
+        "correctness": 0.75,
+        "completeness": 0.825,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.7633333333333332,
+        "correctness": 0.6666666666666666,
+        "completeness": 0.7666666666666666,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.96625,
+        "correctness": 1.0,
+        "completeness": 0.8875,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.9864999999999999,
+        "correctness": 1.0,
+        "completeness": 0.955,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.8579999999999999,
+        "correctness": 0.8,
+        "completeness": 0.8599999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.645,
+        "correctness": 0.5,
+        "completeness": 0.6499999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.7633333333333332,
+        "correctness": 0.6666666666666666,
+        "completeness": 0.7666666666666666,
+        "coherence": 1.0
+      },
       {
         "date": "2026-03-16",
         "overall": 1.0,
@@ -395,10 +668,80 @@
   {
     "model": "glm-5",
     "provider": "Bailian",
-    "current_score": 0.8538595238095237,
-    "baseline_score": 0.7949571428571429,
+    "current_score": 0.8643619047619046,
+    "baseline_score": 0.7842857142857141,
     "drop_percentage": 0,
     "trend": [
+      {
+        "date": "2026-03-17",
+        "overall": 0.8579999999999999,
+        "correctness": 0.8,
+        "completeness": 0.8599999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.645,
+        "correctness": 0.5,
+        "completeness": 0.6499999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.7633333333333332,
+        "correctness": 0.6666666666666666,
+        "completeness": 0.7666666666666666,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.8153333333333332,
+        "correctness": 0.6666666666666666,
+        "completeness": 0.94,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.9883,
+        "correctness": 1.0,
+        "completeness": 0.961,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.8579999999999999,
+        "correctness": 0.8,
+        "completeness": 0.8599999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.645,
+        "correctness": 0.5,
+        "completeness": 0.6499999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.7633333333333332,
+        "correctness": 0.6666666666666666,
+        "completeness": 0.7666666666666666,
+        "coherence": 1.0
+      },
       {
         "date": "2026-03-16",
         "overall": 1.0,
@@ -544,10 +887,80 @@
   {
     "model": "qwen3.5-plus",
     "provider": "Bailian",
-    "current_score": 0.789595238095238,
-    "baseline_score": 0.7977714285714285,
-    "drop_percentage": 1.0248788291192097,
+    "current_score": 0.8548166666666666,
+    "baseline_score": 0.851802380952381,
+    "drop_percentage": 0,
     "trend": [
+      {
+        "date": "2026-03-17",
+        "overall": 0.8579999999999999,
+        "correctness": 0.8,
+        "completeness": 0.8599999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.645,
+        "correctness": 0.5,
+        "completeness": 0.6499999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.7633333333333332,
+        "correctness": 0.6666666666666666,
+        "completeness": 0.7666666666666666,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.6962833333333334,
+        "correctness": 0.6666666666666666,
+        "completeness": 0.5431666666666666,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.9856,
+        "correctness": 1.0,
+        "completeness": 0.952,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.8579999999999999,
+        "correctness": 0.8,
+        "completeness": 0.8599999999999999,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 1.0,
+        "correctness": 1.0,
+        "completeness": 1.0,
+        "coherence": 1.0
+      },
+      {
+        "date": "2026-03-17",
+        "overall": 0.7633333333333332,
+        "correctness": 0.6666666666666666,
+        "completeness": 0.7666666666666666,
+        "coherence": 1.0
+      },
       {
         "date": "2026-03-16",
         "overall": 0.5740000000000001,
