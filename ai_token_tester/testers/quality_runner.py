@@ -11,6 +11,7 @@ from ..models.base import AIProvider
 from ..models.bailian import BailianProvider
 from ..models.zhipu import ZhipuProvider
 from ..models.anthropic_compat import AnthropicCompatibleProvider
+from ..models.minimax import MiniMaxProvider
 from ..prompts.eval_prompts import EVAL_PROMPTS, EvalPrompt, get_eval_prompt
 from ..storage.history import HistoryStorage
 from ..utils.formatter import ResultFormatter
@@ -67,6 +68,8 @@ class QualityBenchmarkRunner:
                 provider = BailianProvider(api_key, model_name, base_url)
             elif provider_name == "zhipu":
                 provider = ZhipuProvider(api_key, model_name, base_url)
+            elif provider_name == "minimax":
+                provider = MiniMaxProvider(api_key, model_name, base_url)
             elif provider_name in ("anthropic", "anthropic_lite", "volcengine"):
                 provider = AnthropicCompatibleProvider(api_key, model_name, base_url)
             else:

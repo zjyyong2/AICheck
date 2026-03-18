@@ -5,34 +5,36 @@ api_keys:
   anthropic: "${ANTHROPIC_API_KEY}"
   anthropic_lite: "${ANTHROPIC_LITE_API_KEY}"
   volcengine: "${VOLCENGINE_API_KEY}"
+  minimax: "${MINIMAX_API_KEY}"
 
 base_urls:
   anthropic: "${ANTHROPIC_BASE_URL}"
   anthropic_lite: "${ANTHROPIC_LITE_BASE_URL}"
   volcengine: "${VOLCENGINE_BASE_URL}"
+  minimax: "https://api.minimax.chat/v1/"
 
 models:
   anthropic:
     - name: "qwen3.5-plus (Pro)"
       api_name: "qwen3.5-plus"
-      enabled: false
+      enabled: true
     - name: "glm-5 (Pro)"
       api_name: "glm-5"
-      enabled: false
+      enabled: true
 
   anthropic_lite:
     - name: "qwen3.5-plus (Lite)"
       api_name: "qwen3.5-plus"
-      enabled: false
+      enabled: true
     - name: "glm-5 (Lite)"
       api_name: "glm-5"
-      enabled: false
+      enabled: true
     - name: "glm-4.7"
       api_name: "glm-4.7"
-      enabled: false
+      enabled: true
     - name: "MiniMax-M2.5"
       api_name: "MiniMax-M2.5"
-      enabled: false
+      enabled: true
 
   volcengine:
     - name: "Doubao-Seed-2.0-pro"
@@ -40,7 +42,12 @@ models:
       enabled: true
     - name: "Doubao-Seed-2.0-Code"
       api_name: "Doubao-Seed-2.0-Code"
-      enabled: false
+      enabled: true
+
+  minimax:
+    - name: "MiniMax-M2.5"
+      api_name: "MiniMax-M2.5"
+      enabled: true
 
 test_settings:
   iterations: 3
