@@ -48,6 +48,9 @@ models:
     - name: "MiniMax-M2.5"
       api_name: "MiniMax-M2.5"
       enabled: true
+    - name: "MiniMax-M2.7"
+      api_name: "MiniMax-M2.7"
+      enabled: true
 
 test_settings:
   iterations: 3

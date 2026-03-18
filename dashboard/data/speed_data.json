@@ -1,23 +1,23 @@
 [
   {
-    "model": "MiniMax-M2.5",
+    "model": "MiniMax-M2.7",
     "provider": "MiniMax",
-    "ttft": 32356,
-    "tokens_per_sec": 38.97236698469993,
-    "last_test": "2026-03-18T13:42:20.566746Z"
+    "ttft": 19162,
+    "tokens_per_sec": 60.064991782289816,
+    "last_test": "2026-03-18T14:32:58.028676Z"
   },
   {
-    "model": "MiniMax-M2.5",
+    "model": "MiniMax-M2.7",
     "provider": "MiniMax",
-    "ttft": 39437,
-    "tokens_per_sec": 30.80829900823952,
-    "last_test": "2026-03-18T13:42:20.566746Z"
+    "ttft": 20796,
+    "tokens_per_sec": 59.91266541341168,
+    "last_test": "2026-03-18T14:32:58.028676Z"
   },
   {
-    "model": "MiniMax-M2.5",
+    "model": "MiniMax-M2.7",
     "provider": "MiniMax",
-    "ttft": 36124,
-    "tokens_per_sec": 35.95849383306017,
-    "last_test": "2026-03-18T13:42:20.566746Z"
+    "ttft": 19605,
+    "tokens_per_sec": 60.28987832558929,
+    "last_test": "2026-03-18T14:32:58.028676Z"
   }
 ]
