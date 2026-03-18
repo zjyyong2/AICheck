@@ -1,37 +1,23 @@
 [
   {
-    "model": "qwen3.5-plus",
-    "provider": "Bailian",
-    "ttft": 15228,
-    "tokens_per_sec": 59.8,
-    "last_test": "2026-03-18T11:26:41.219766Z"
+    "model": "MiniMax-M2.5",
+    "provider": "MiniMax",
+    "ttft": 32356,
+    "tokens_per_sec": 38.97236698469993,
+    "last_test": "2026-03-18T13:42:20.566746Z"
   },
   {
     "model": "MiniMax-M2.5",
-    "provider": "Bailian",
-    "ttft": 29000,
-    "tokens_per_sec": 45.9,
-    "last_test": "2026-03-18T11:26:41.219766Z"
+    "provider": "MiniMax",
+    "ttft": 39437,
+    "tokens_per_sec": 30.80829900823952,
+    "last_test": "2026-03-18T13:42:20.566746Z"
   },
   {
-    "model": "glm-4.7",
-    "provider": "Bailian",
-    "ttft": 35000,
-    "tokens_per_sec": 20.5,
-    "last_test": "2026-03-18T11:26:41.219766Z"
-  },
-  {
-    "model": "Kimi-K2.5",
-    "provider": "Volcengine",
-    "ttft": 92000,
-    "tokens_per_sec": 13.0,
-    "last_test": "2026-03-18T11:26:41.219766Z"
-  },
-  {
-    "model": "Doubao-Seed-2.0-pro",
-    "provider": "Volcengine",
-    "ttft": 25058,
-    "tokens_per_sec": 27.9,
-    "last_test": "2026-03-18T11:26:41.219766Z"
+    "model": "MiniMax-M2.5",
+    "provider": "MiniMax",
+    "ttft": 36124,
+    "tokens_per_sec": 35.95849383306017,
+    "last_test": "2026-03-18T13:42:20.566746Z"
   }
 ]

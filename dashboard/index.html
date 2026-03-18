@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Token Speed & Quality Dashboard</title>
+    <title>AI Token Speed Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -80,6 +80,7 @@
         .provider-bailian { background: #dbeafe; color: #1e40af; }
         .provider-volcengine { background: #fce7f3; color: #9d174d; }
         .provider-zhipu { background: #d1fae5; color: #065f46; }
+        .provider-minimax { background: #fef3c7; color: #92400e; }
         .speed-bar {
             height: 6px;
             border-radius: 3px;
@@ -97,24 +98,6 @@
         .speed-bar-fill.medium { background: var(--primary); }
         .speed-bar-fill.low { background: var(--warning); }
         .speed-bar-fill.poor { background: var(--danger); }
-        .alert-card {
-            border-left: 4px solid;
-            border-radius: 4px;
-            padding: 12px;
-            margin-bottom: 10px;
-            background: white;
-        }
-        .alert-card.warning { border-color: var(--warning); }
-        .alert-card.critical { border-color: var(--danger); }
-        .status-badge {
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        .status-healthy { background: #d1fae5; color: #065f46; }
-        .status-warning { background: #fef3c7; color: #92400e; }
-        .status-critical { background: #fee2e2; color: #991b1b; }
         .table th {
             font-weight: 600;
             color: var(--gray-600);
@@ -127,8 +110,6 @@
             vertical-align: middle;
             padding: 12px;
         }
-        .trend-stable { color: var(--success); }
-        .trend-down { color: var(--danger); }
         .footer {
             background: var(--dark);
             color: var(--gray-500);
@@ -160,7 +141,7 @@
     <nav class="navbar navbar-dark mb-4">
         <div class="container-fluid px-4">
             <span class="navbar-brand mb-0 h1 fw-bold">
-                AI Token Speed & Quality Dashboard
+                AI Token Speed Dashboard
             </span>
             <span class="navbar-text text-white-50 small">
                 Last Updated: <span id="lastUpdate">-</span>
@@ -171,7 +152,7 @@
     <div class="container-fluid px-4">
         <!-- Stats Overview -->
         <div class="row mb-4">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="card stat-card">
                     <div class="card-body text-center">
                         <div class="stat-value" id="totalModels">-</div>
@@ -179,7 +160,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="card stat-card">
                     <div class="card-body text-center">
                         <div class="stat-value text-success" id="fastestModel">-</div>
@@ -187,19 +168,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="card stat-card">
                     <div class="card-body text-center">
                         <div class="stat-value" id="avgSpeed">-</div>
                         <div class="stat-label">Avg Speed (tokens/s)</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card stat-card">
-                    <div class="card-body text-center">
-                        <div class="stat-value" id="activeAlerts">-</div>
-                        <div class="stat-label">Active Alerts</div>
                     </div>
                 </div>
             </div>
@@ -213,7 +186,7 @@
                         <span>Speed Test Results</span>
                         <span class="text-muted small">Updated Hourly</span>
                     </div>
-                    <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                    <div class="card-body" style="max-height: 500px; overflow-y: auto;">
                         <div id="speedList">
                             <div class="text-center text-muted py-4">Loading...</div>
                         </div>
@@ -233,96 +206,23 @@
                 </div>
             </div>
         </div>
-
-        <div class="row mb-4">
-            <!-- Quality Trend Chart -->
-            <div class="col-lg-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>Quality Trend</span>
-                        <select id="qualityModelSelect" class="form-select form-select-sm" style="width: 180px;">
-                        </select>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="qualityChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Alerts List -->
-            <div class="col-lg-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>Degradation Alerts</span>
-                        <span class="status-badge status-healthy" id="alertBadge">Normal</span>
-                    </div>
-                    <div class="card-body" style="max-height: 280px; overflow-y: auto;">
-                        <div id="alertList">
-                            <div class="text-center text-muted py-4">
-                                <div style="color: var(--success); font-size: 2rem;">&#10003;</div>
-                                <p class="mt-2 text-muted">No alerts</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quality Table -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">Quality Score Details</div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Model</th>
-                                        <th>Provider</th>
-                                        <th>Current</th>
-                                        <th>Baseline</th>
-                                        <th>Change</th>
-                                        <th>Trend</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="qualityTable">
-                                    <tr>
-                                        <td colspan="7" class="text-center text-muted">Loading...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <footer class="footer">
         <div class="container-fluid px-4 text-center">
-            <p class="mb-1">AI Token Speed & Quality Dashboard</p>
-            <p class="small mb-0">Hourly Degradation Detection | Daily Speed Test | Auto Updated</p>
+            <p class="mb-1">AI Token Speed Dashboard</p>
+            <p class="small mb-0">Auto Updated</p>
         </div>
     </footer>
 
     <script>
         let speedData = [];
-        let qualityData = [];
-        let alertsData = [];
         let speedChart = null;
-        let qualityChart = null;
 
         document.addEventListener('DOMContentLoaded', async () => {
             await loadData();
             renderSpeedList();
             renderSpeedChart();
-            renderQualityTable();
-            initQualityChart();
-            renderAlerts();
             updateStats();
             document.getElementById('lastUpdate').textContent = new Date().toLocaleString('en-US', {
                 year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
@@ -331,14 +231,8 @@
 
         async function loadData() {
             try {
-                const [speedRes, qualityRes, alertsRes] = await Promise.all([
-                    fetch('data/speed_data.json'),
-                    fetch('data/quality_data.json'),
-                    fetch('data/alerts_data.json')
-                ]);
+                const speedRes = await fetch('data/speed_data.json');
                 speedData = await speedRes.json();
-                qualityData = await qualityRes.json();
-                alertsData = await alertsRes.json();
             } catch (e) {
                 console.error('Failed to load data:', e);
             }
@@ -418,161 +312,6 @@
             });
         }
 
-        function renderQualityTable() {
-            const tbody = document.getElementById('qualityTable');
-            const select = document.getElementById('qualityModelSelect');
-
-            if (!qualityData.length) {
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">No data available</td></tr>';
-                return;
-            }
-
-            let tableHtml = '';
-            let selectHtml = '<option value="">Select Model</option>';
-
-            qualityData.forEach(item => {
-                const status = getStatus(item.drop_percentage);
-                const changeClass = item.drop_percentage > 10 ? 'trend-down' : 'trend-stable';
-                const changeIcon = item.drop_percentage > 10 ? '&#8595;' : '&#8593;';
-
-                selectHtml += `<option value="${item.model}">${item.model}</option>`;
-
-                tableHtml += `
-                    <tr>
-                        <td><strong>${item.model}</strong></td>
-                        <td><span class="provider-badge ${getProviderClass(item.provider)}">${item.provider}</span></td>
-                        <td>${(item.current_score * 100).toFixed(0)}%</td>
-                        <td>${(item.baseline_score * 100).toFixed(0)}%</td>
-                        <td class="${changeClass}">${changeIcon} ${item.drop_percentage.toFixed(1)}%</td>
-                        <td>
-                            ${item.trend && item.trend.length > 1 ?
-                                '<span class="trend-stable">Stable</span>' :
-                                '<span class="text-muted">Insufficient data</span>'}
-                        </td>
-                        <td><span class="status-badge ${status.class}">${status.text}</span></td>
-                    </tr>
-                `;
-            });
-
-            tbody.innerHTML = tableHtml;
-            select.innerHTML = selectHtml;
-
-            select.addEventListener('change', (e) => {
-                if (e.target.value) {
-                    updateQualityChart(e.target.value);
-                }
-            });
-
-            if (qualityData.length > 0) {
-                select.value = qualityData[0].model;
-            }
-        }
-
-        function initQualityChart() {
-            const ctx = document.getElementById('qualityChart').getContext('2d');
-
-            qualityChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [
-                        {
-                            label: 'Overall',
-                            data: [],
-                            borderColor: '#2563eb',
-                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                            fill: true,
-                            tension: 0.3
-                        },
-                        {
-                            label: 'Correctness',
-                            data: [],
-                            borderColor: '#059669',
-                            backgroundColor: 'transparent',
-                            tension: 0.3
-                        },
-                        {
-                            label: 'Completeness',
-                            data: [],
-                            borderColor: '#d97706',
-                            backgroundColor: 'transparent',
-                            tension: 0.3
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'top' }
-                    },
-                    scales: {
-                        y: {
-                            min: 0,
-                            max: 1,
-                            title: { display: true, text: 'Score' },
-                            grid: { color: '#e5e7eb' }
-                        },
-                        x: {
-                            grid: { display: false }
-                        }
-                    }
-                }
-            });
-
-            if (qualityData.length > 0) {
-                updateQualityChart(qualityData[0].model);
-            }
-        }
-
-        function updateQualityChart(modelName) {
-            const model = qualityData.find(d => d.model === modelName);
-            if (!model || !model.trend || !model.trend.length) return;
-
-            qualityChart.data.labels = model.trend.map(t => t.date.slice(5));
-            qualityChart.data.datasets[0].data = model.trend.map(t => t.overall);
-            qualityChart.data.datasets[1].data = model.trend.map(t => t.correctness || t.overall);
-            qualityChart.data.datasets[2].data = model.trend.map(t => t.completeness || t.overall);
-            qualityChart.update();
-        }
-
-        function renderAlerts() {
-            const container = document.getElementById('alertList');
-            const badge = document.getElementById('alertBadge');
-
-            if (!alertsData.length) {
-                badge.className = 'status-badge status-healthy';
-                badge.textContent = 'Normal';
-                return;
-            }
-
-            let html = '';
-            alertsData.forEach(alert => {
-                const severityClass = alert.severity === 'critical' ? 'critical' : 'warning';
-                const severityText = alert.severity === 'critical' ? 'Critical' : 'Warning';
-                html += `
-                    <div class="alert-card ${severityClass}">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <strong>${alert.model}</strong>
-                                <span class="text-muted ms-2">${alert.metric}</span>
-                            </div>
-                            <span class="status-badge ${severityClass === 'critical' ? 'status-critical' : 'status-warning'}">
-                                ${severityText}
-                            </span>
-                        </div>
-                        <div class="mt-1 small text-muted">
-                            Drop: ${alert.drop_percentage.toFixed(1)}% | Current: ${alert.current_score.toFixed(2)} / Baseline: ${alert.baseline_score.toFixed(2)}
-                        </div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-            badge.className = 'status-badge status-warning';
-            badge.textContent = `${alertsData.length} Alert${alertsData.length > 1 ? 's' : ''}`;
-        }
-
         function updateStats() {
             document.getElementById('totalModels').textContent = speedData.length;
 
@@ -583,8 +322,6 @@
                 const avgSpeed = speedData.reduce((sum, d) => sum + d.tokens_per_sec, 0) / speedData.length;
                 document.getElementById('avgSpeed').textContent = avgSpeed.toFixed(1);
             }
-
-            document.getElementById('activeAlerts').textContent = alertsData.length;
         }
 
         function getProviderClass(provider) {
@@ -597,7 +334,9 @@
                 '火山引擎': 'provider-volcengine',
                 'Zhipu': 'provider-zhipu',
                 'zhipu': 'provider-zhipu',
-                '智普': 'provider-zhipu'
+                '智普': 'provider-zhipu',
+                'MiniMax': 'provider-minimax',
+                'minimax': 'provider-minimax'
             };
             return map[provider] || 'provider-bailian';
         }
@@ -607,12 +346,6 @@
             if (speed >= 30) return 'medium';
             if (speed >= 15) return 'low';
             return 'poor';
-        }
-
-        function getStatus(drop) {
-            if (drop >= 20) return { class: 'status-critical', text: 'Critical' };
-            if (drop >= 15) return { class: 'status-warning', text: 'Warning' };
-            return { class: 'status-healthy', text: 'Normal' };
         }
     </script>
 </body>
